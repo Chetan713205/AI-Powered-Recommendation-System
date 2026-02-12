@@ -1,0 +1,5 @@
+.env/
+myenv/
+__pycache__/
+ML_Ops_Project2.egg-info/
+.env

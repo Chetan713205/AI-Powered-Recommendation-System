@@ -1,0 +1,47 @@
+## this is for pulling the docker image from dockerhub and 
+## deploying prometheus in kubernetes engine
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: monitoring     ## It will be inside the monitoring namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus             ## calling from dockerhub https://hub.docker.com/r/prom/prometheus
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"  ## dont use the default customs instead use configmap.yaml
+          ports:
+            - containerPort: 9090
+          volumeMounts:                  ## creating volume
+            - name: config-volume
+              mountPath: /etc/prometheus
+      volumes:
+        - name: config-volume            ## getting data from configmap
+          configMap:
+            name: prometheus-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-service
+  namespace: monitoring
+spec:
+  selector:
+    app: prometheus
+  ports:
+    - protocol: TCP
+      port: 9090
+      targetPort: 9090
+      nodePort: 32001 
+  type: NodePort
