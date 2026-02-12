@@ -1,5 +1,6 @@
 ## It will be monitoring 2 things, first itself running at 9090 port and the 
 ## flask app \metrics running at 9000 port
+## Target IP to be changed during deployment
 
 apiVersion: v1
 kind: ConfigMap
@@ -19,4 +20,4 @@ data:
       - job_name: 'flask-app'
         metrics_path: /metrics
         static_configs:
-          - targets: ['34.42.228.136:9000']
+          - targets: ['34.42.228.136:9000']     

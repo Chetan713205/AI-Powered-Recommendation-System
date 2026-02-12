@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: flask-app
 spec:
-  replicas: 2            ## no. of pods needed
+  replicas: 2                               ## no. of pods needed
   selector:
     matchLabels:
       app: flask-app
@@ -15,9 +15,9 @@ spec:
       containers:
       - name: flask-app-container
         image: flask-app:latest
-        imagePullPolicy: IfNotPresent       # First check for the image inside the cluster only
+        imagePullPolicy: IfNotPresent       ## First check for the image inside the cluster only
         ports:
-          - containerPort: 9000  # Replace with the port your app listens on
+          - containerPort: 9000             # Replace with the port your app listens on
         envFrom:
           - secretRef: 
               name: flask-app-secret
@@ -30,7 +30,7 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: flask-app-app
+    app: flask-app
   ports:
   - protocol: TCP
     port: 80
